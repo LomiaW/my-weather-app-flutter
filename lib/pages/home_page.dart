@@ -13,9 +13,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   MyGeoLocation? _geoLocation;
   Weather? _weather;
-  WeatherIcon? _weatherIcon;
   HourlyWeather? _hourly;
-  // Forecast? _forecast;
+  WeatherIcon? _weatherIcon;
 
   Future<void> getWeatherInfo() async {
     // get the current location for the local device
@@ -26,20 +25,21 @@ class _HomePageState extends State<HomePage> {
     });
     // get the open meteo api to fetch weather data
     OpenMeteoApi openMeteo = OpenMeteoApi();
-    var w = await openMeteo.getWeatherByCoordinate(
-        latitude: _geoLocation!.latitude!, longitude: _geoLocation!.longitude!);
+    _weather = await openMeteo.getWeatherByCoordinate(
+        latitude: _geoLocation!.latitude!,
+        longitude: _geoLocation!.longitude!,
+        current_weather: true);
     setState(() {
-      _weather = w;
-      _hourly = _weather?.hourly;
+      _hourly = _weather!.hourly!;
     });
     // get the weather icon with hourly weather code
     WeatherIcon icon = WeatherIcon();
-    icon.setWeatherDesc(_hourly?.weathercode?[0]);
-    setState(() {
-      _weatherIcon = icon;
-    });
-    // _forecast = Forecast(
-    //     latitude: _geoLocation!.latitude!, longitude: _geoLocation!.longitude!);
+    if (_hourly != null) {
+      icon.setWeatherDesc(_hourly!.weathercode?[0]);
+      setState(() {
+        _weatherIcon = icon;
+      });
+    }
   }
 
   @override
@@ -53,17 +53,40 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home Page'),
+        backgroundColor: Colors.deepPurple[200],
       ),
+      drawer: Drawer(
+          backgroundColor: Colors.deepPurple[100],
+          child: const Column(
+            children: [
+              DrawerHeader(
+                child: Icon(
+                  Icons.face,
+                  size: 48,
+                  color: Colors.black45,
+                ),
+              ),
+              ListTile(
+                leading: Icon(Icons.home_rounded),
+                title: Text(
+                  "H O M E",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+              ListTile(
+                leading: Icon(Icons.location_pin),
+                title: Text(
+                  "S E A R C H",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          )),
       body: _buildUI(),
     );
   }
 
   Widget _buildUI() {
-    if (_geoLocation == null) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    }
     return SizedBox(
       height: MediaQuery.sizeOf(context).height,
       width: MediaQuery.sizeOf(context).width,
@@ -74,17 +97,10 @@ class _HomePageState extends State<HomePage> {
         children: [
           _locationHeader(),
           SizedBox(
-            height: MediaQuery.sizeOf(context).height * 0.08,
+            height: MediaQuery.sizeOf(context).height * 0.03,
           ),
-          // _weatherIconInfo(),
-          SizedBox(
-            height: MediaQuery.sizeOf(context).height * 0.02,
-          ),
-          // _currentTemp(),
-          SizedBox(
-            height: MediaQuery.sizeOf(context).height * 0.02,
-          ),
-          // _weekForecastInfo(),
+          _weatherIconInfo(),
+          _currentTemp(),
         ],
       ),
     );
@@ -94,7 +110,7 @@ class _HomePageState extends State<HomePage> {
     return Text(
       _geoLocation?.cityName ?? "Loading ... ",
       style: const TextStyle(
-        fontSize: 20,
+        fontSize: 24,
         fontWeight: FontWeight.w500,
       ),
     );
@@ -110,12 +126,13 @@ class _HomePageState extends State<HomePage> {
           height: MediaQuery.sizeOf(context).height * 0.20,
           width: MediaQuery.sizeOf(context).width * 0.40,
           decoration: BoxDecoration(
-            color: Colors.deepPurpleAccent,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(
               20,
             ),
           ),
-          child: Image.asset(_weatherIcon!.getWeatherIcon()),
+          child:
+              Image.asset(_weatherIcon?.getWeatherIcon() ?? 'assets/sun.png'),
         ),
         Text(
           _weatherIcon?.description ?? "",
@@ -130,57 +147,12 @@ class _HomePageState extends State<HomePage> {
 
   Widget _currentTemp() {
     return Text(
-      "${_hourly!.temperature_2m?[0]}° C",
+      "${_hourly?.temperature_2m?[0]}° C",
       style: const TextStyle(
         color: Colors.black,
-        fontSize: 90,
+        fontSize: 24,
         fontWeight: FontWeight.w500,
       ),
-    );
-  }
-
-  Widget _weekForecastInfo() {
-    return Container(
-      height: MediaQuery.sizeOf(context).height * 0.15,
-      width: MediaQuery.sizeOf(context).width * 0.80,
-      decoration: BoxDecoration(
-        color: Colors.deepPurpleAccent,
-        borderRadius: BorderRadius.circular(
-          20,
-        ),
-      ),
-      padding: const EdgeInsets.all(
-        8.0,
-      ),
-      child: const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              child: Text(
-                "Day 1",
-                style: TextStyle(
-                  fontSize: 15,
-                ),
-              ),
-            ),
-            SizedBox(
-              child: Text(
-                "Day 2",
-                style: TextStyle(
-                  fontSize: 15,
-                ),
-              ),
-            ),
-            SizedBox(
-              child: Text(
-                "Day 3",
-                style: TextStyle(
-                  fontSize: 15,
-                ),
-              ),
-            ),
-          ]),
     );
   }
 }

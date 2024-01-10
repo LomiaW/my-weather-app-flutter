@@ -2,8 +2,11 @@ class WeatherIcon {
   int? weatherCode;
   String? description;
 
-  void setWeatherDesc(int wcode) {
+  void setWeatherDesc(int? wcode) {
     weatherCode = wcode;
+    if (wcode == null) {
+      description = "Unknown";
+    }
     switch (weatherCode) {
       case 0:
         description = "Clear sky";
@@ -62,7 +65,7 @@ class WeatherIcon {
       case 99:
         description = "Thunderstorm with heavy hail";
       default:
-        description = "Unknown";
+        description = "Sunny";
     }
   }
 
