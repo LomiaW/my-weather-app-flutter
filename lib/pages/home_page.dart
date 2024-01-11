@@ -13,7 +13,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   MyGeoLocation? _geoLocation;
   Weather? _weather;
-  HourlyWeather? _hourly;
+  CurrentWeather? _currentWeather;
   WeatherIcon? _weatherIcon;
 
   Future<void> getWeatherInfo() async {
@@ -30,16 +30,14 @@ class _HomePageState extends State<HomePage> {
         longitude: _geoLocation!.longitude!,
         current_weather: true);
     setState(() {
-      _hourly = _weather!.hourly!;
+      _currentWeather = _weather!.current_weather!;
     });
     // get the weather icon with hourly weather code
     WeatherIcon icon = WeatherIcon();
-    if (_hourly != null) {
-      icon.setWeatherDesc(_hourly!.weathercode?[0]);
-      setState(() {
-        _weatherIcon = icon;
-      });
-    }
+    icon.setWeatherDesc(_currentWeather!.weathercode!);
+    setState(() {
+      _weatherIcon = icon;
+    });
   }
 
   @override
@@ -147,7 +145,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _currentTemp() {
     return Text(
-      "${_hourly?.temperature_2m?[0]}° C",
+      "${_currentWeather?.temperature}° C",
       style: const TextStyle(
         color: Colors.black,
         fontSize: 24,
