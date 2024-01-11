@@ -1,6 +1,6 @@
 # my_weather_app_flutter
 
-A new Flutter project.
+A weather app which retrieves the geolocation from the user's device as default to display current weather info. 
 
 ## Getting Started
 
