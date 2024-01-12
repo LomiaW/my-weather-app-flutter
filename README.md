@@ -9,6 +9,5 @@ A simple Flutter application to display the current weather conditions using ope
 
 ## Demo
 
-[Screen_recording_20240111_233555.webm](https://github.com/LomiaW/my-weather-app-flutter/assets/97309404/90b197fc-3909-4944-bad7-305077bb9914)
-
+[Screen_recording_20240112_184007.webm](https://github.com/LomiaW/my-weather-app-flutter/assets/97309404/32c4adc9-ad72-42a5-a6a9-3b015a9c86d7)
 
