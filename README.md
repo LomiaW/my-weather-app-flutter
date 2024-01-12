@@ -1,6 +1,6 @@
 # my_weather_app_flutter
 
-A weather app which retrieves the geolocation from the user's device as default to display current weather info. 
+A weather app using open-meteo.com's API. 
 
 ## Getting Started
 
