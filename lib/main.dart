@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_weather_app_flutter/pages/home_page.dart';
+import 'package:my_weather_app_flutter/pages/start_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,13 +11,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'My Weather App',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const HomePage(),
+      home: StartPage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

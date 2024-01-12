@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:my_weather_app_flutter/models/constants.dart';
 import 'package:my_weather_app_flutter/models/my_geo_location.dart';
 import 'package:my_weather_app_flutter/models/weather_icon.dart';
 import 'package:weather_open_meteo_client/weather_open_meteo_client.dart';
@@ -15,6 +17,7 @@ class _HomePageState extends State<HomePage> {
   Weather? _weather;
   CurrentWeather? _currentWeather;
   WeatherIcon? _weatherIcon;
+  Constants myConstants = Constants();
 
   Future<void> getWeatherInfo() async {
     // get the current location for the local device
@@ -32,7 +35,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _currentWeather = _weather!.current_weather!;
     });
-    // get the weather icon with hourly weather code
+    // get the weather icon with the weather code
     WeatherIcon icon = WeatherIcon();
     icon.setWeatherDesc(_currentWeather!.weathercode!);
     setState(() {
@@ -50,32 +53,45 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home Page'),
-        backgroundColor: Colors.deepPurple[200],
+        title: const Text(
+          'Home',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: myConstants.secondaryColor,
       ),
       drawer: Drawer(
-          backgroundColor: Colors.deepPurple[100],
+          backgroundColor: myConstants.primaryColor,
           child: const Column(
             children: [
               DrawerHeader(
                 child: Icon(
                   Icons.face,
                   size: 48,
-                  color: Colors.black45,
+                  color: Color.fromARGB(176, 255, 255, 255),
                 ),
               ),
               ListTile(
-                leading: Icon(Icons.home_rounded),
+                leading: Icon(
+                  Icons.home_rounded,
+                  color: Color.fromARGB(176, 255, 255, 255),
+                ),
                 title: Text(
                   "H O M E",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: Color.fromARGB(176, 255, 255, 255),
+                      fontWeight: FontWeight.bold),
                 ),
               ),
               ListTile(
-                leading: Icon(Icons.location_pin),
+                leading: Icon(
+                  Icons.settings,
+                  color: Color.fromARGB(176, 255, 255, 255),
+                ),
                 title: Text(
-                  "S E A R C H",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  "S E T T I N G S",
+                  style: TextStyle(
+                      color: Color.fromARGB(176, 255, 255, 255),
+                      fontWeight: FontWeight.bold),
                 ),
               ),
             ],
@@ -94,11 +110,8 @@ class _HomePageState extends State<HomePage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           _locationHeader(),
-          SizedBox(
-            height: MediaQuery.sizeOf(context).height * 0.03,
-          ),
           _weatherIconInfo(),
-          _currentTemp(),
+          _weatherTemp(),
         ],
       ),
     );
@@ -129,6 +142,7 @@ class _HomePageState extends State<HomePage> {
               20,
             ),
           ),
+          padding: const EdgeInsets.all(16.0),
           child:
               Image.asset(_weatherIcon?.getWeatherIcon() ?? 'assets/sun.png'),
         ),
@@ -143,7 +157,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _currentTemp() {
+  Widget _weatherTemp() {
     return Text(
       "${_currentWeather?.temperature}° C",
       style: const TextStyle(
@@ -153,4 +167,6 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+  // /Widget _weatherForecast() {}
 }
