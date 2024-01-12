@@ -1,9 +1,14 @@
 # my_weather_app_flutter
 
-A new Flutter project.
+A simple Flutter application to display the current weather conditions using open-meteo.com's API. 
 
-## Getting Started
+## Features
+- Splash screen
+- Weather Display: Show the current weather using an icon.
+- Weather Forecast Chart: Display a 7-day temperature forecast in a graphic chart.
 
-Demo
+## Demo
 
-<img src="https://github.com/LomiaW/my-weather-app-flutter/assets/97309404/be96f324-3369-4fcf-911b-f45922fb87df" width="240" height="500" />
+[Screen_recording_20240111_233555.webm](https://github.com/LomiaW/my-weather-app-flutter/assets/97309404/90b197fc-3909-4944-bad7-305077bb9914)
+
+
