@@ -1,8 +1,8 @@
 class WeatherIcon {
-  int? weatherCode;
+  num? weatherCode;
   String? description;
 
-  void setWeatherDesc(int? wcode) {
+  void setWeatherDesc(num? wcode) {
     weatherCode = wcode;
     if (wcode == null) {
       description = "Unknown";

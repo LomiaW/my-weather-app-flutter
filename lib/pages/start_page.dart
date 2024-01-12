@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_weather_app_flutter/models/constants.dart';
+import 'package:my_weather_app_flutter/constants/constants.dart';
 import 'package:my_weather_app_flutter/pages/home_page.dart';
 
 class StartPage extends StatelessWidget {

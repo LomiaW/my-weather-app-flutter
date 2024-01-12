@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
-import 'package:my_weather_app_flutter/models/constants.dart';
-import 'package:my_weather_app_flutter/models/my_geo_location.dart';
+import 'package:my_weather_app_flutter/constants/constants.dart';
 import 'package:my_weather_app_flutter/models/weather_icon.dart';
-import 'package:weather_open_meteo_client/weather_open_meteo_client.dart';
+import 'package:my_weather_app_flutter/models/weather.dart';
+import 'package:my_weather_app_flutter/services/weather_service.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,31 +13,17 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  MyGeoLocation? _geoLocation;
   Weather? _weather;
-  CurrentWeather? _currentWeather;
+  final WeatherService _weatherService = WeatherService();
   WeatherIcon? _weatherIcon;
   Constants myConstants = Constants();
 
   Future<void> getWeatherInfo() async {
-    // get the current location for the local device
-    MyGeoLocation location = MyGeoLocation();
-    await location.getCurrentLocation();
-    setState(() {
-      _geoLocation = location;
-    });
-    // get the open meteo api to fetch weather data
-    OpenMeteoApi openMeteo = OpenMeteoApi();
-    _weather = await openMeteo.getWeatherByCoordinate(
-        latitude: _geoLocation!.latitude!,
-        longitude: _geoLocation!.longitude!,
-        current_weather: true);
-    setState(() {
-      _currentWeather = _weather!.current_weather!;
-    });
+    _weather = await _weatherService.getWeatherData();
+
     // get the weather icon with the weather code
     WeatherIcon icon = WeatherIcon();
-    icon.setWeatherDesc(_currentWeather!.weathercode!);
+    icon.setWeatherDesc(_weather!.current!.weatherCode!);
     setState(() {
       _weatherIcon = icon;
     });
@@ -119,7 +105,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _locationHeader() {
     return Text(
-      _geoLocation?.cityName ?? "Loading ... ",
+      _weatherService.city ?? "Loading ... ",
       style: const TextStyle(
         fontSize: 24,
         fontWeight: FontWeight.w500,
@@ -159,7 +145,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _weatherTemp() {
     return Text(
-      "${_currentWeather?.temperature}° C",
+      "${_weather!.current!.temperature2m}° C",
       style: const TextStyle(
         color: Colors.black,
         fontSize: 24,

@@ -39,6 +39,7 @@ dependencies:
   geolocator: ^10.1.0
   geocoding: ^2.1.1
   weather_open_meteo_client: ^0.0.3
+  json_annotation: ^4.8.1
 
 dev_dependencies:
   flutter_test:
